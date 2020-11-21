@@ -83,6 +83,20 @@ public class MyLinkedList<E> implements List<E> {
 	@Override
 	public void add(int index, E element) {
 		//TODO: FILL THIS IN!
+		// check index valid
+		if (index < 0 || index > size) {
+			throw new IndexOutOfBoundsException();
+		}
+
+		if (index == 0) {
+			head = new Node(element, head);
+
+		} else {
+			// get node index (will also check index bound)
+			Node prev = getNode(index - 1);
+			prev.next = new Node(element, prev.next);
+		}
+		size++;
 	}
 
 	@Override
@@ -141,10 +155,18 @@ public class MyLinkedList<E> implements List<E> {
 		return node;
 	}
 
+	// 找到第一個與target相同的物件, 並回傳index, 若找不到則回傳 -1
 	@Override
 	public int indexOf(Object target) {
 		//TODO: FILL THIS IN!
+		Node node = head;
+		for (int x = 0; x < size; x++, node = node.next) {
+			if (equals(target, node.data)) {
+				return x;
+			}
+		}
 		return -1;
+
 	}
 
 	/** Checks whether an element of the array is the target.
@@ -209,7 +231,16 @@ public class MyLinkedList<E> implements List<E> {
 	@Override
 	public E remove(int index) {
 		//TODO: FILL THIS IN!
-		return null;
+		Node curr = getNode(index);
+
+		if (index == 0) {
+			head = head.next;
+		} else {
+			Node prev = getNode(index - 1);
+			prev.next = curr.next;
+		}
+		size--;
+		return curr.data;
 	}
 
 	@Override
