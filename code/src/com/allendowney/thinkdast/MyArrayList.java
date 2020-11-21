@@ -45,7 +45,17 @@ public class MyArrayList<T> implements List<T> {
 	@Override
 	public boolean add(T element) {
 		// TODO: FILL THIS IN!
-		return false;
+		// 先檢查是超出陣列大小
+		if (size >=array.length) {
+			T[] bigger = (T[]) new Object[array.length * 2];
+			// copy array
+			System.arraycopy(array, 0, bigger, 0, array.length);
+			array = bigger;
+		}
+		// 執行 add
+		array[size] = element;
+		size++;
+		return true;
 	}
 
 	@Override
@@ -111,6 +121,20 @@ public class MyArrayList<T> implements List<T> {
 	@Override
 	public int indexOf(Object target) {
 		// TODO: FILL THIS IN!
+		// found it !
+		for (int idx = 0; idx < size; idx++) {
+//			if (equals(array[idx], target)) {
+//				return idx;
+//			}
+			if (array[idx] == null) {
+				return  target == null ? idx : -1;
+			} else {
+				if (array[idx].equals(target))
+					return idx;
+			}
+		}
+
+		// not found
 		return -1;
 	}
 
@@ -182,7 +206,15 @@ public class MyArrayList<T> implements List<T> {
 	@Override
 	public T remove(int index) {
 		// TODO: FILL THIS IN!
-		return null;
+
+		T old = get(index);
+		// limit = size - 1 -> 因為最後一個不用
+		for(int x = index; x < size - 1; x++) {
+			array[x] = array[x + 1];
+		}
+		size--;
+
+		return old;
 	}
 
 	@Override
@@ -202,7 +234,12 @@ public class MyArrayList<T> implements List<T> {
 	@Override
 	public T set(int index, T element) {
 		// TODO: FILL THIS IN!
-		return null;
+		if (index < 0 || index >= size) {
+			throw new IndexOutOfBoundsException();
+		}
+		T old = array[index];
+		array[index] = element;
+		return old;
 	}
 
 	@Override
